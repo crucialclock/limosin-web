@@ -1,41 +1,24 @@
-import { createBriefing } from "../../api/resources/briefings";
-import type { CreateBriefingPayload } from "../../api/types/briefings";
 import { siteConfig } from "../../config/site";
 import type { ContactBriefingForm } from "./contact.types";
 
-type SubmitBriefingInput = {
-    formData: ContactBriefingForm;
-    solutionLabel?: string;
-    solutionSlug?: string;
-    token: string;
-};
-
 export function buildWhatsappUrl(solutionLabel?: string) {
-    const whatsappText = solutionLabel ? `Olá! Gostaria de um orçamento para a solução de ${solutionLabel}.` : "Olá! Gostaria de alinhar um orçamento para um projeto com vocês.";
+    const whatsappText = solutionLabel ? `Ola! Gostaria de conversar sobre: ${solutionLabel}.` : "Ola! Vim pelo site da Limosin e queria conversar sobre uma pagina para o meu negocio.";
     return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(whatsappText)}`;
 }
 
-export async function submitBriefing({ formData, solutionLabel, solutionSlug, token }: SubmitBriefingInput) {
-    const scopeValue = formData.scope.join(", ").trim();
-    const companyName = formData.companyName.trim();
-    const budget = formData.budget.trim();
-    const references = formData.references.trim();
-    const deadline = formData.deadline.trim();
-    const objective = formData.objective.trim();
+export function buildBriefingWhatsappUrl(formData: ContactBriefingForm, solutionLabel?: string) {
+    const lines = [
+        "Ola! Vim pelo site da Limosin e queria contar uma ideia de pagina/site.",
+        solutionLabel ? `Interesse: ${solutionLabel}` : "",
+        `Nome: ${formData.contactName}`,
+        `E-mail: ${formData.email}`,
+        formData.companyName ? `Empresa/projeto: ${formData.companyName}` : "",
+        `Prazo ideal: ${formData.deadline}`,
+        `Objetivo: ${formData.objective}`,
+        formData.scope.length ? `Escopo possivel: ${formData.scope.join(", ")}` : "",
+        formData.references ? `Referencias: ${formData.references}` : "",
+        formData.budget ? `Investimento previsto: ${formData.budget}` : "",
+    ].filter(Boolean);
 
-    const payload: CreateBriefingPayload = {
-        contactName: formData.contactName,
-        ...(budget ? { budget } : {}),
-        ...(companyName ? { companyName } : {}),
-        deadline,
-        email: formData.email,
-        objective,
-        ...(references ? { references } : {}),
-        ...(scopeValue ? { scope: scopeValue } : {}),
-        solutionLabel: solutionLabel || "Contato geral",
-        solutionSlug: solutionSlug || "contato-geral",
-        source: "site-briefing-form",
-    };
-
-    return createBriefing(payload, token);
+    return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
 }

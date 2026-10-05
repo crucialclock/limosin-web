@@ -1,21 +1,17 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../../features/auth/useAuth";
 import Logo from "./Logo";
 
 const navigationLinks = [
-    { to: "/", label: "Início" },
-    { to: "/servicos", label: "Serviços" },
-    { to: "/portfolio", label: "Portfólio" },
+    { to: "/", label: "Inicio" },
+    { to: "/servicos", label: "Servicos" },
+    { to: "/portfolio", label: "Portfolio" },
     { to: "/contato", label: "Contato" },
     { to: "/sobre", label: "Sobre" },
 ];
 
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { isAuthenticated, userRole } = useAuth();
-    const accountHref = userRole === "ADMIN" ? "/painel" : "/minha-area";
-    const accountLabel = isAuthenticated ? "Minha área" : "Entrar";
 
     const closeMenu = () => setIsMobileMenuOpen(false);
 
@@ -28,7 +24,7 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="sticky top-0 z-50 w-full border-b border-neutral-200/80 bg-white/92 backdrop-blur-xl shadow-[0_8px_30px_rgba(15,23,42,0.06)]">
+            <header className="sticky top-0 z-50 w-full border-b border-neutral-200/80 bg-white/92 shadow-[0_8px_30px_rgba(15,23,42,0.06)] backdrop-blur-xl">
                 <div className="page-shell flex h-16 items-center justify-between sm:h-18">
                     <Link to="/" onClick={closeMenu} className="relative z-50 cursor-pointer">
                         <Logo />
@@ -40,15 +36,8 @@ export default function Navbar() {
                                 {link.label}
                             </NavLink>
                         ))}
-                        <Link
-                            to={isAuthenticated ? accountHref : "/entrar"}
-                            className={`inline-flex items-center justify-center rounded-full px-5 py-2.5 text-[0.9rem] font-medium tracking-[0.01em] transition-all duration-300 ${
-                                isAuthenticated
-                                    ? "border border-neutral-300 bg-white text-neutral-900 shadow-[0_10px_24px_rgba(24,24,27,0.08)] hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
-                                    : "bg-neutral-950 text-white shadow-[0_10px_24px_rgba(24,24,27,0.12)] hover:bg-neutral-800"
-                            }`}
-                        >
-                            {accountLabel}
+                        <Link to="/contato" className="inline-flex items-center justify-center rounded-full bg-neutral-950 px-5 py-2.5 text-[0.9rem] font-medium tracking-[0.01em] text-white shadow-[0_10px_24px_rgba(24,24,27,0.12)] transition-all duration-300 hover:bg-neutral-800">
+                            Solicitar proposta
                         </Link>
                     </nav>
 
@@ -83,16 +72,8 @@ export default function Navbar() {
                             {link.label}
                         </NavLink>
                     ))}
-                    <Link
-                        to={isAuthenticated ? accountHref : "/entrar"}
-                        onClick={closeMenu}
-                        className={`mt-5 inline-flex items-center justify-center rounded-2xl px-5 py-3 text-[0.92rem] font-medium tracking-[0.01em] transition-all ${
-                            isAuthenticated
-                                ? "border border-neutral-300 bg-white text-neutral-900 shadow-[0_10px_24px_rgba(24,24,27,0.08)] hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
-                                : "bg-neutral-950 text-white hover:bg-neutral-800"
-                        }`}
-                    >
-                        {accountLabel}
+                    <Link to="/contato" onClick={closeMenu} className="mt-5 inline-flex items-center justify-center rounded-2xl bg-neutral-950 px-5 py-3 text-[0.92rem] font-medium tracking-[0.01em] text-white transition-all hover:bg-neutral-800">
+                        Solicitar proposta
                     </Link>
                 </nav>
             </aside>

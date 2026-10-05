@@ -95,9 +95,9 @@ export default function About() {
                         <span className="theme-text-muted type-chip mb-5 block">Nossa história</span>
 
                         <h1 className="theme-text-primary page-title-display max-w-4xl lg:text-[clamp(4.2rem,5.2vw,4.8rem)]">
-                            Construindo o
+                            Páginas simples
                             <br />
-                            que faz sentido.
+                            que fazem sentido.
                         </h1>
                     </div>
 
@@ -126,10 +126,10 @@ export default function About() {
 
                         <div className="theme-text-secondary space-y-4 text-center text-base font-medium leading-relaxed sm:text-lg lg:col-span-8 lg:pt-0.5">
                             <p className="text-justify">
-                                A <span className="font-black">Limosin</span> nasceu da vontade de fazer tecnologia de um jeito simples: ouvir o problema, cortar o excesso e transformar ideias em ferramentas limpas, úteis e fáceis de usar.
+                                A <span className="font-black">Limosin</span> nasceu da vontade de fazer presença digital de um jeito simples: ouvir a oferta, cortar o excesso e transformar ideias em páginas claras, bonitas e fáceis de publicar.
                             </p>
 
-                            <p className="text-justify">Nosso foco é resolver problemas sem criar sistemas desnecessariamente complexos. Avaliamos o cenário atual para entregar o que o seu negócio precisa, focando na prioridade e robustez de entrega, moldando uma base sólida.</p>
+                            <p className="text-justify">O foco agora é ajudar negócios a se apresentarem melhor na internet com páginas simples, bonitas e bem organizadas. Quando uma ideia pede algo maior, ela entra como conversa sob medida, com escopo definido antes da proposta.</p>
                         </div>
                     </div>
                 </div>
@@ -138,9 +138,9 @@ export default function About() {
             {/* CTA */}
             <section className="page-shell relative z-10 pt-3 pb-16 sm:pt-4 sm:pb-18 lg:pt-5 lg:pb-20">
                 <div className="theme-surface theme-border mx-auto flex max-w-3xl flex-col items-center rounded-3xl border bg-white/80 p-5 text-center shadow-xs backdrop-blur-sm sm:p-7 lg:p-8">
-                    <h2 className="theme-text-primary type-section-title sm:text-3xl">Tem uma ideia para tirar do papel?</h2>
+                    <h2 className="theme-text-primary type-section-title sm:text-3xl">Quer colocar uma página no ar?</h2>
 
-                    <p className="theme-text-secondary mt-3 max-w-xl text-sm leading-relaxed sm:text-base">Nos conte o que você quer construir.</p>
+                    <p className="theme-text-secondary mt-3 max-w-xl text-sm leading-relaxed sm:text-base">Nos conte sua oferta, seu prazo e o tipo de página que você precisa.</p>
 
                     <Link to="/contato" className="cursor-pointer theme-cta-primary type-button mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-4 transition-all duration-500 ease-in-out hover:scale-[1.02] hover:shadow-lg sm:w-auto sm:px-10">
                         Começar conversa

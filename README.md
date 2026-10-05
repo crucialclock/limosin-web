@@ -1,15 +1,6 @@
-# 🍋 LemonLabs
+# Limosin
 
-Site da LemonLabs.
-
-Deploy Github Pages: `https://github.com/mtslma/lemonlabs/deployments`
-
-## Clonar
-
-```bash
-git clone https://github.com/mtslma/lemonlabs.git
-cd lemonlabs
-```
+Site da Limosin.
 
 ## Rodar
 
@@ -18,12 +9,16 @@ npm install
 npm run dev
 ```
 
-Abra o endereço exibido no terminal.
+Abra o endereco exibido no terminal.
+
+## Build
+
+```bash
+npm run build
+```
 
 ## Deploy
 
 ```bash
 npm run deploy
 ```
-
-No Github configurar a branch de deploy do pages para `gh-pages`.

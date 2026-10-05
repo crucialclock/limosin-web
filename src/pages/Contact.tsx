@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import { ArrowRight, CircleCheckBig, ClipboardList, LockKeyhole, Send, Sparkles } from "lucide-react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowRight, CircleCheckBig, ClipboardList, Send, Sparkles } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
 import { FaWhatsapp } from "react-icons/fa";
 
-import { ApiError } from "../api/core/client";
-import { useAuth } from "../features/auth/useAuth";
 import {
     briefingGuidelines,
     briefingScopeOptions,
@@ -13,10 +11,10 @@ import {
     initialBriefingForm,
     solutionLabels,
 } from "../features/contact/contact.constants";
-import { buildWhatsappUrl, submitBriefing } from "../features/contact/contact.service";
+import { buildBriefingWhatsappUrl, buildWhatsappUrl } from "../features/contact/contact.service";
 import type { ContactBriefingForm, ContactMode } from "../features/contact/contact.types";
 
-const conversationSteps = ["O primeiro contato ajuda a entender o momento do projeto.", "A Limosin organiza prioridades, possibilidades e próximos passos.", "Depois disso, o escopo pode ser definido com mais clareza."];
+const conversationSteps = ["O primeiro contato ajuda a entender o que voce quer colocar no ar.", "A Limosin organiza a ideia, os conteudos e o caminho de contato.", "Se a ideia for maior que uma pagina simples, a gente conversa com calma antes de fechar escopo."];
 
 function readBriefingDraft() {
     if (typeof window === "undefined") {
@@ -42,46 +40,26 @@ function readBriefingDraft() {
 }
 
 function writeBriefingDraft(formData: ContactBriefingForm) {
-    if (typeof window === "undefined") {
-        return;
+    if (typeof window !== "undefined") {
+        window.localStorage.setItem(CONTACT_BRIEFING_DRAFT_KEY, JSON.stringify(formData));
     }
-
-    window.localStorage.setItem(CONTACT_BRIEFING_DRAFT_KEY, JSON.stringify(formData));
 }
 
 function clearBriefingDraft() {
-    if (typeof window === "undefined") {
-        return;
+    if (typeof window !== "undefined") {
+        window.localStorage.removeItem(CONTACT_BRIEFING_DRAFT_KEY);
     }
-
-    window.localStorage.removeItem(CONTACT_BRIEFING_DRAFT_KEY);
 }
 
 export default function Contact() {
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const { isAuthenticated, session } = useAuth();
     const [mode, setMode] = useState<ContactMode>(searchParams.get("modo") === "briefing" ? "briefing" : "quote");
     const [formData, setFormData] = useState<ContactBriefingForm>(() => readBriefingDraft());
     const [feedback, setFeedback] = useState("");
-    const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const solutionSlug = searchParams.get("solucao") ?? "";
     const selectedSolution = solutionLabels[solutionSlug];
     const whatsappUrl = buildWhatsappUrl(selectedSolution);
-
-    useEffect(() => {
-        if (!session?.user) {
-            return;
-        }
-
-        setFormData((current) => ({
-            ...current,
-            contactName: session.user.name,
-            email: session.user.email,
-        }));
-    }, [session?.user]);
 
     useEffect(() => {
         writeBriefingDraft(formData);
@@ -92,23 +70,6 @@ export default function Contact() {
             setMode("briefing");
         }
     }, [searchParams]);
-
-    useEffect(() => {
-        if (redirectCountdown === null) {
-            return;
-        }
-
-        if (redirectCountdown === 0) {
-            navigate("/minha-area/briefings", { replace: true });
-            return;
-        }
-
-        const timeoutId = window.setTimeout(() => {
-            setRedirectCountdown((current) => (current === null ? null : current - 1));
-        }, 1000);
-
-        return () => window.clearTimeout(timeoutId);
-    }, [navigate, redirectCountdown]);
 
     function updateField<K extends keyof ContactBriefingForm>(field: K, value: ContactBriefingForm[K]) {
         setFormData((current) => ({
@@ -125,67 +86,28 @@ export default function Contact() {
     }
 
     function handleClearBriefingForm() {
-        const nextForm = {
-            ...initialBriefingForm,
-            contactName: session?.user.name ?? "",
-            email: session?.user.email ?? "",
-        };
-
         setFeedback("");
-        setRedirectCountdown(null);
-        setFormData(nextForm);
+        setFormData(initialBriefingForm);
         clearBriefingDraft();
     }
 
-    async function handleBriefingSubmit(event: FormEvent<HTMLFormElement>) {
+    function handleBriefingSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        setFeedback("");
-        setRedirectCountdown(null);
+        const briefingUrl = buildBriefingWhatsappUrl(formData, selectedSolution);
+        setFeedback("Mensagem preparada. Se o WhatsApp nao abrir automaticamente, voce pode iniciar a conversa pelo botao principal.");
 
-        if (!isAuthenticated || !session?.accessToken) {
-            writeBriefingDraft(formData);
-            navigate(`/entrar`, {
-                state: {
-                    redirectTo: `/contato?modo=briefing${solutionSlug ? `&solucao=${solutionSlug}` : ""}`,
-                },
-            });
-            return;
-        }
-
-        setIsSubmitting(true);
-
-        try {
-            await submitBriefing({
-                formData,
-                solutionLabel: selectedSolution,
-                solutionSlug,
-                token: session.accessToken,
-            });
-
-            const nextForm = {
-                ...initialBriefingForm,
-                contactName: session.user.name,
-                email: session.user.email,
-            };
-
-            setFormData(nextForm);
-            clearBriefingDraft();
-            setFeedback("Briefing recebido com sucesso. Você será redirecionado para a sua área de acompanhamento.");
-            setRedirectCountdown(4);
-        } catch (error) {
-            setFeedback(error instanceof ApiError ? error.message : "Não foi possível enviar o briefing agora. Tente novamente ou use o contato por WhatsApp.");
-        } finally {
-            setIsSubmitting(false);
+        if (typeof window !== "undefined") {
+            window.open(briefingUrl, "_blank", "noopener,noreferrer");
         }
     }
 
     return (
         <main className="theme-page relative flex min-h-[calc(100vh-72px)] w-full flex-col justify-start overflow-hidden bg-white">
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <div className="absolute inset-0 home-dot-grid opacity-70" />
-                <div className="theme-support-soft absolute -right-32 top-16 h-72 w-72 rounded-full blur-[110px] opacity-40" />
-                <div className="theme-accent-soft absolute -bottom-36 left-12 h-80 w-80 rounded-full blur-[120px] opacity-30" />
+            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+                <div className="home-dot-grid absolute inset-0 opacity-70" />
+                <div className="theme-support-soft absolute top-16 -right-32 h-72 w-72 rounded-full opacity-40 blur-[110px]" />
+                <div className="theme-accent-soft absolute -bottom-36 left-12 h-80 w-80 rounded-full opacity-30 blur-[120px]" />
             </div>
 
             <section className="page-shell relative z-10 pt-10 pb-20 sm:pt-16 sm:pb-24 lg:pt-16 lg:pb-28">
@@ -195,10 +117,10 @@ export default function Contact() {
                             Nos conte <br />a sua ideia.
                         </h1>
 
-                        <p className="theme-text-secondary mt-5 max-w-2xl text-base font-medium leading-relaxed sm:mt-7 sm:text-lg">Escolha como prefere iniciar: uma conversa rápida para tirar dúvidas ou um briefing mais completo para adiantar o escopo. O objetivo é entender o cenário antes de propor qualquer caminho.</p>
+                        <p className="theme-text-secondary mt-5 max-w-2xl text-base leading-relaxed font-medium sm:mt-7 sm:text-lg">Voce pode chamar direto para conversar ou preencher algumas informacoes antes. O importante e entender o que precisa ser apresentado e qual pagina faz sentido para isso.</p>
 
                         <div className="mt-6 max-w-2xl sm:mt-8">
-                            <p className="theme-text-muted type-chip mb-3">Como começar</p>
+                            <p className="theme-text-muted type-chip mb-3">Como comecar</p>
 
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <button type="button" onClick={() => setMode("quote")} className={`cursor-pointer rounded-2xl border p-4 text-left transition-colors duration-200 sm:p-5 ${mode === "quote" ? "border-yellow-400 bg-yellow-400/5 shadow-xs" : "theme-border bg-white hover:bg-neutral-50"}`}>
@@ -206,15 +128,15 @@ export default function Contact() {
                                         <Sparkles className="h-5 w-5 text-yellow-500" strokeWidth={2.2} />
                                         <span className="theme-text-primary type-card-title">Conversar primeiro</span>
                                     </div>
-                                    <p className="theme-text-secondary mt-2 text-sm leading-relaxed">Para explicar a ideia de forma direta e receber uma primeira orientação.</p>
+                                    <p className="theme-text-secondary mt-2 text-sm leading-relaxed">Para explicar a ideia, tirar duvidas e sentir se faz sentido seguir.</p>
                                 </button>
 
                                 <button type="button" onClick={() => setMode("briefing")} className={`cursor-pointer rounded-2xl border p-4 text-left transition-colors duration-200 sm:p-5 ${mode === "briefing" ? "border-yellow-400 bg-yellow-400/5 shadow-xs" : "theme-border bg-white hover:bg-neutral-50"}`}>
                                     <div className="flex items-center gap-3">
                                         <ClipboardList className="h-5 w-5 text-yellow-500" strokeWidth={2.2} />
-                                        <span className="theme-text-primary type-card-title">Enviar briefing</span>
+                                        <span className="theme-text-primary type-card-title">Contar melhor</span>
                                     </div>
-                                    <p className="theme-text-secondary mt-2 text-sm leading-relaxed">Para deixar as informações organizadas desde o primeiro contato.</p>
+                                    <p className="theme-text-secondary mt-2 text-sm leading-relaxed">Para ja chegar com objetivo, prazo e referencias mais organizados.</p>
                                 </button>
                             </div>
                         </div>
@@ -230,7 +152,7 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <h2 className="theme-text-primary type-section-title">Inicie pelo WhatsApp.</h2>
-                                            <p className="theme-text-secondary mt-2 text-sm leading-relaxed">Caminho mais rápido para apresentar a ideia, tirar dúvidas iniciais e entender se já existe um formato de serviço adequado.</p>
+                                            <p className="theme-text-secondary mt-2 text-sm leading-relaxed">Caminho mais rapido para contar o que voce precisa colocar no ar.</p>
                                         </div>
                                     </div>
 
@@ -280,21 +202,9 @@ export default function Contact() {
                         {mode === "briefing" && (
                             <form onSubmit={handleBriefingSubmit} className="theme-surface theme-border grid w-full gap-4 rounded-3xl border p-4 shadow-md sm:p-8 lg:p-9">
                                 <div>
-                                    <h2 className="theme-text-primary type-section-title">Envie o briefing do projeto.</h2>
-                                    <p className="theme-text-secondary mt-2 text-sm leading-relaxed">As informações serão salvas e preenchidas quando você fizer login.</p>
+                                    <h2 className="theme-text-primary type-section-title">Conte um pouco da ideia.</h2>
+                                    <p className="theme-text-secondary mt-2 text-sm leading-relaxed">O formulario so organiza a mensagem para continuar pelo WhatsApp. Nada de cadastro, senha ou sistema por tras.</p>
                                 </div>
-
-                                {!isAuthenticated ? (
-                                    <div className="rounded-2xl border border-yellow-200/80 bg-yellow-50/45 px-4 py-3">
-                                        <div className="flex items-start gap-2.5">
-                                            <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-yellow-700/85" strokeWidth={2.2} />
-                                            <div>
-                                                <p className="type-chip text-yellow-800/75">Acesso na etapa final</p>
-                                                <p className="mt-1 text-sm leading-relaxed text-yellow-900/80">O login só será pedido no envio, e suas respostas continuam salvas.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : null}
 
                                 {selectedSolution && (
                                     <div className="theme-border border-b pb-4">
@@ -305,13 +215,13 @@ export default function Contact() {
 
                                 <div className="grid gap-4 sm:grid-cols-2">
                                     <label className="block w-full">
-                                        <span className="theme-text-primary mb-1.5 block text-xs font-semibold">Nome <span className="theme-text-muted">(obrigatório)</span></span>
-                                        <input value={formData.contactName} readOnly placeholder="Seu nome" className="theme-border w-full rounded-xl border bg-neutral-50 px-4 py-2.5 text-sm outline-none" />
+                                        <span className="theme-text-primary mb-1.5 block text-xs font-semibold">Nome <span className="theme-text-muted">(obrigatorio)</span></span>
+                                        <input value={formData.contactName} onChange={(event) => updateField("contactName", event.target.value)} required placeholder="Seu nome" className="theme-border w-full rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition focus:border-yellow-400" />
                                     </label>
 
                                     <label className="block w-full">
-                                        <span className="theme-text-primary mb-1.5 block text-xs font-semibold">E-mail <span className="theme-text-muted">(obrigatório)</span></span>
-                                        <input value={formData.email} readOnly type="email" placeholder="seuemail@exemplo.com" className="theme-border w-full rounded-xl border bg-neutral-50 px-4 py-2.5 text-sm outline-none" />
+                                        <span className="theme-text-primary mb-1.5 block text-xs font-semibold">E-mail <span className="theme-text-muted">(obrigatorio)</span></span>
+                                        <input value={formData.email} onChange={(event) => updateField("email", event.target.value)} required type="email" placeholder="seuemail@exemplo.com" className="theme-border w-full rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition focus:border-yellow-400" />
                                     </label>
                                 </div>
 
@@ -322,29 +232,24 @@ export default function Contact() {
                                     </label>
 
                                     <label className="block w-full">
-                                        <span className="theme-text-primary mb-1.5 block text-xs font-semibold">Prazo ideal <span className="text-red-500">(obrigatório)</span></span>
+                                        <span className="theme-text-primary mb-1.5 block text-xs font-semibold">Prazo ideal <span className="text-red-500">(obrigatorio)</span></span>
                                         <input value={formData.deadline} onChange={(event) => updateField("deadline", event.target.value)} placeholder="Ex: sem pressa, 30 dias, urgente..." required className="theme-border w-full rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition focus:border-yellow-400" />
                                     </label>
                                 </div>
 
                                 <label className="block w-full">
-                                    <span className="theme-text-primary mb-1.5 block text-xs font-semibold">O que precisa ser resolvido? <span className="text-red-500">(obrigatório)</span></span>
-                                    <textarea value={formData.objective} onChange={(event) => updateField("objective", event.target.value)} placeholder="Ex: captar clientes, automatizar atendimento, organizar pedidos, criar um site mais profissional..." required rows={4} className="theme-border w-full resize-none rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition focus:border-yellow-400" />
+                                    <span className="theme-text-primary mb-1.5 block text-xs font-semibold">O que precisa ser resolvido? <span className="text-red-500">(obrigatorio)</span></span>
+                                    <textarea value={formData.objective} onChange={(event) => updateField("objective", event.target.value)} placeholder="Ex: quero apresentar meu trabalho, divulgar uma novidade, explicar melhor minha empresa, levar pessoas para o WhatsApp..." required rows={4} className="theme-border w-full resize-none rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition focus:border-yellow-400" />
                                 </label>
 
                                 <div className="block w-full">
-                                    <span className="theme-text-primary mb-2 block text-xs font-semibold">O que a solução pode envolver? <span className="theme-text-muted">(opcional)</span></span>
+                                    <span className="theme-text-primary mb-2 block text-xs font-semibold">O que voce imagina? <span className="theme-text-muted">(opcional)</span></span>
                                     <div className="grid gap-2.5 sm:grid-cols-2 sm:gap-3">
                                         {briefingScopeOptions.map((option) => {
                                             const checked = formData.scope.includes(option);
 
                                             return (
-                                                <button
-                                                    key={option}
-                                                    type="button"
-                                                    onClick={() => toggleScopeOption(option)}
-                                                    className={`rounded-2xl border px-3.5 py-3 text-left text-sm font-semibold leading-snug transition-colors sm:px-4 ${checked ? "border-yellow-400 bg-yellow-50 text-neutral-950" : "theme-border bg-white text-neutral-700 hover:bg-neutral-50"}`}
-                                                >
+                                                <button key={option} type="button" onClick={() => toggleScopeOption(option)} className={`rounded-2xl border px-3.5 py-3 text-left text-sm leading-snug font-semibold transition-colors sm:px-4 ${checked ? "border-yellow-400 bg-yellow-50 text-neutral-950" : "theme-border bg-white text-neutral-700 hover:bg-neutral-50"}`}>
                                                     {option}
                                                 </button>
                                             );
@@ -354,8 +259,8 @@ export default function Contact() {
 
                                 <div className="grid gap-4 sm:grid-cols-2">
                                     <label className="block w-full">
-                                        <span className="theme-text-primary mb-1.5 block text-xs font-semibold">Referências <span className="theme-text-muted">(opcional)</span></span>
-                                        <textarea value={formData.references} onChange={(event) => updateField("references", event.target.value)} placeholder="Sites, concorrentes ou estilos de referência" rows={2} className="theme-border w-full resize-none rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition focus:border-yellow-400" />
+                                        <span className="theme-text-primary mb-1.5 block text-xs font-semibold">Referencias <span className="theme-text-muted">(opcional)</span></span>
+                                        <textarea value={formData.references} onChange={(event) => updateField("references", event.target.value)} placeholder="Sites, concorrentes ou estilos de referencia" rows={2} className="theme-border w-full resize-none rounded-xl border bg-white px-4 py-2.5 text-sm outline-none transition focus:border-yellow-400" />
                                     </label>
 
                                     <label className="block w-full">
@@ -364,35 +269,22 @@ export default function Contact() {
                                     </label>
                                 </div>
 
-                                {feedback ? (
-                                    <p
-                                        className={`rounded-xl px-4 py-3 text-sm font-medium ${
-                                            redirectCountdown !== null ? "border border-emerald-200 bg-emerald-50 text-emerald-800" : "border border-yellow-200 bg-yellow-50 text-yellow-800"
-                                        }`}
-                                    >
-                                        {feedback}
-                                        {redirectCountdown !== null ? ` Redirecionando em ${redirectCountdown}s.` : ""}
-                                    </p>
-                                ) : null}
+                                {feedback ? <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{feedback}</p> : null}
 
                                 <div className="mt-2 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                                     <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-                                        <button type="submit" disabled={isSubmitting} className="theme-cta-primary type-button inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3.5 transition-opacity duration-300 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto">
+                                        <button type="submit" className="theme-cta-primary type-button inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3.5 transition-opacity duration-300 sm:w-auto">
                                             <Send className="h-4 w-4" strokeWidth={2.2} />
-                                            {isSubmitting ? "Enviando..." : isAuthenticated ? "Enviar briefing" : "Entrar para enviar"}
+                                            Preparar mensagem
                                         </button>
 
-                                        <button
-                                            type="button"
-                                            onClick={handleClearBriefingForm}
-                                            className="theme-border theme-text-secondary type-button inline-flex w-full cursor-pointer items-center justify-center rounded-full border px-6 py-3.5 transition-colors hover:bg-neutral-950 hover:text-white sm:w-auto"
-                                        >
-                                            Limpar formulário
+                                        <button type="button" onClick={handleClearBriefingForm} className="theme-border theme-text-secondary type-button inline-flex w-full cursor-pointer items-center justify-center rounded-full border px-6 py-3.5 transition-colors hover:bg-neutral-950 hover:text-white sm:w-auto">
+                                            Limpar formulario
                                         </button>
                                     </div>
 
-                                    <Link to="/servicos" className="theme-link-accent type-button inline-flex justify-center whitespace-nowrap text-center opacity-80 underline underline-offset-4 transition-opacity duration-300 hover:opacity-100">
-                                        Ver modelos de serviço
+                                    <Link to="/servicos" className="theme-link-accent type-button inline-flex justify-center text-center whitespace-nowrap underline underline-offset-4 opacity-80 transition-opacity duration-300 hover:opacity-100">
+                                        Ver possibilidades
                                     </Link>
                                 </div>
                             </form>
