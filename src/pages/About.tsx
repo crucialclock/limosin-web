@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import PageBackground from "../components/brand/PageBackground";
 
 function LemonIllustration() {
     return (
@@ -35,7 +36,7 @@ function LemonIllustration() {
 function PitcherIllustration() {
     return (
         <div className="relative flex items-end justify-center gap-3 select-none sm:gap-4 lg:-translate-x-2">
-            <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-400/10 blur-3xl sm:h-48 sm:w-48 lg:h-56 lg:w-56" />
+            <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-(--color-accent-soft) sm:h-48 sm:w-48 lg:h-56 lg:w-56" />
 
             {/* Copo - menor, à esquerda da jarra */}
             <div className="relative z-20 mb-1 flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20 lg:mb-2 lg:h-36 lg:w-36">
@@ -79,22 +80,14 @@ function PitcherIllustration() {
 
 export default function About() {
     return (
-        <main className="theme-page relative flex min-h-[calc(100vh-72px)] w-full flex-col justify-start overflow-hidden bg-white">
-            {/* BACKGROUND */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <div className="absolute inset-0 home-dot-grid opacity-70" />
-
-                <div className="theme-support-soft absolute -right-32 top-16 h-72 w-72 rounded-full blur-[110px] opacity-40" />
-                <div className="theme-accent-soft absolute -bottom-36 left-12 h-80 w-80 rounded-full blur-[120px] opacity-30" />
-            </div>
+        <main className="theme-page brand-page-bg relative flex min-h-[calc(100vh-72px)] w-full flex-col justify-start overflow-hidden">
+            <PageBackground />
 
             {/* HERO */}
             <section className="page-shell relative z-10 pt-10 sm:pt-16 lg:pt-16">
-                <div className="grid items-center gap-6 sm:gap-8 lg:grid-cols-12 lg:gap-6">
+                <div className="grid items-start gap-6 sm:gap-8 lg:grid-cols-12 lg:gap-6">
                     <div className="lg:col-span-7">
-                        <span className="theme-text-muted type-chip mb-5 block">Nossa história</span>
-
-                        <h1 className="theme-text-primary page-title-display max-w-4xl lg:text-[clamp(4.2rem,5.2vw,4.8rem)]">
+                        <h1 className="theme-text-primary page-title-display max-w-4xl lg:text-[clamp(3.8rem,5vw,4.55rem)]">
                             Páginas simples
                             <br />
                             que fazem sentido.
@@ -110,7 +103,7 @@ export default function About() {
             {/* HISTÓRIA */}
             {/* HISTÓRIA */}
             <section className="page-shell relative z-10 pt-5 pb-4 sm:pt-8 sm:pb-5 lg:pt-8 lg:pb-6">
-                <div className="theme-surface theme-border rounded-3xl border p-4 shadow-xs sm:p-7 lg:p-8">
+                <div className="theme-surface theme-border rounded-xl border p-4 shadow-xs sm:p-7 lg:p-8">
                     <div className="grid gap-6 lg:grid-cols-12 lg:items-start lg:gap-6">
                         <div className="flex flex-col items-center text-center lg:col-span-4">
                             <div className="flex flex-col items-center">
@@ -124,12 +117,12 @@ export default function About() {
                             </div>
                         </div>
 
-                        <div className="theme-text-secondary space-y-4 text-center text-base font-medium leading-relaxed sm:text-lg lg:col-span-8 lg:pt-0.5">
-                            <p className="text-justify">
+                        <div className="theme-text-secondary space-y-4 text-base font-medium leading-relaxed sm:text-lg lg:col-span-8 lg:pt-0.5">
+                            <p>
                                 A <span className="font-black">Limosin</span> nasceu da vontade de fazer presença digital de um jeito simples: ouvir a oferta, cortar o excesso e transformar ideias em páginas claras, bonitas e fáceis de publicar.
                             </p>
 
-                            <p className="text-justify">O foco agora é ajudar negócios a se apresentarem melhor na internet com páginas simples, bonitas e bem organizadas. Quando uma ideia pede algo maior, ela entra como conversa sob medida, com escopo definido antes da proposta.</p>
+                            <p>O foco agora é ajudar negócios a se apresentarem melhor na internet com páginas simples, bonitas e bem organizadas. Quando uma ideia pede algo maior, ela entra como conversa sob medida, com escopo definido antes da proposta.</p>
                         </div>
                     </div>
                 </div>
@@ -137,14 +130,15 @@ export default function About() {
 
             {/* CTA */}
             <section className="page-shell relative z-10 pt-3 pb-16 sm:pt-4 sm:pb-18 lg:pt-5 lg:pb-20">
-                <div className="theme-surface theme-border mx-auto flex max-w-3xl flex-col items-center rounded-3xl border bg-white/80 p-5 text-center shadow-xs backdrop-blur-sm sm:p-7 lg:p-8">
+                <div className="theme-surface theme-border mx-auto flex max-w-3xl flex-col items-center rounded-xl border p-5 text-center shadow-xs sm:p-7 lg:p-8">
+                    <p className="type-chip mb-4 text-(--color-brand-black)/55">Extraia o seu melhor</p>
                     <h2 className="theme-text-primary type-section-title sm:text-3xl">Quer colocar uma página no ar?</h2>
 
                     <p className="theme-text-secondary mt-3 max-w-xl text-sm leading-relaxed sm:text-base">Nos conte sua oferta, seu prazo e o tipo de página que você precisa.</p>
 
-                    <Link to="/contato" className="cursor-pointer theme-cta-primary type-button mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-4 transition-all duration-500 ease-in-out hover:scale-[1.02] hover:shadow-lg sm:w-auto sm:px-10">
+                    <Link to="/contato" className="theme-cta-primary type-button mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-8 py-4 transition-all duration-500 ease-in-out hover:scale-[1.02] sm:w-auto sm:px-10">
                         Começar conversa
-                        <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+                        <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
                     </Link>
                 </div>
             </section>

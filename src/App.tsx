@@ -1,10 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./components/layout/RootLayout";
-import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Projects from "./pages/Projects";
 import Services from "./pages/Services";
 
 const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -22,14 +20,6 @@ const router = createBrowserRouter(
                 {
                     path: "servicos",
                     element: <Services />,
-                },
-                {
-                    path: "portfolio",
-                    element: <Projects />,
-                },
-                {
-                    path: "sobre",
-                    element: <About />,
                 },
                 {
                     path: "contato",

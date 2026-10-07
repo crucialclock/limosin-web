@@ -1,4 +1,5 @@
-    import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import PageBackground from "../brand/PageBackground";
 
     type PageIntroProps = {
         description: string;
@@ -12,24 +13,18 @@
 
     export default function PageIntro({ eyebrow, title, description, primaryHref = "/contato", primaryLabel = "Falar com a Limosin", secondaryHref = "/", secondaryLabel = "Voltar para a home" }: PageIntroProps) {
         return (
-            <section className="theme-page relative overflow-hidden">
-                <div className="absolute inset-0 home-dot-grid opacity-30" />
-                <div className="theme-accent-soft absolute -right-24 top-16 h-72 w-72 rounded-full blur-[100px]" />
-                <div className="theme-support-soft absolute -left-16 bottom-0 h-64 w-64 rounded-full blur-[100px]" />
+            <section className="theme-page brand-page-bg relative overflow-hidden">
+                <PageBackground />
 
-                <div className="page-shell relative grid min-h-[calc(100vh-72px)] grid-cols-1 items-start gap-10 py-10 sm:py-16 lg:grid-cols-12 lg:gap-8 lg:py-0">
-                    <div className="flex max-w-3xl flex-col justify-start pt-12 sm:pt-24 lg:col-span-6 lg:pt-28">
-                        <div className="mb-6 flex items-center gap-3">
-                            <div className="theme-accent-fill h-2 w-2 rounded-full" />
-                            <span className="theme-text-muted type-eyebrow">{eyebrow}</span>
-                        </div>
+                <div className="page-shell relative grid grid-cols-1 items-start gap-10 pt-10 pb-20 sm:pt-16 sm:pb-24 lg:grid-cols-12 lg:gap-8 lg:pt-16 lg:pb-28">
+                    <div className="flex max-w-4xl flex-col justify-start lg:col-span-7">
+                        <span className="sr-only">{eyebrow}</span>
+                        <h1 className="theme-text-primary page-title-display max-w-4xl lg:text-[clamp(3.8rem,5vw,4.55rem)]">{title}</h1>
 
-                        <h1 className="theme-text-primary page-title-display">{title}</h1>
+                        <p className="theme-text-secondary mt-5 max-w-2xl text-base font-medium leading-relaxed sm:mt-7 sm:text-lg">{description}</p>
 
-                        <p className="theme-text-secondary mt-6 max-w-2xl text-base font-medium leading-relaxed sm:text-lg">{description}</p>
-
-                        <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-6">
-                            <Link to={primaryHref} className="theme-cta-primary type-button inline-flex w-full items-center justify-center rounded-full px-7 py-4 sm:w-auto">
+                        <div className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:items-center sm:gap-6">
+                            <Link to={primaryHref} className="theme-cta-primary type-button inline-flex w-full items-center justify-center rounded-xl px-7 py-4 sm:w-auto">
                                 {primaryLabel}
                             </Link>
 

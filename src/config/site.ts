@@ -1,7 +1,7 @@
 export const siteConfig = {
     brandName: "Limosin",
     contactEmail: "contato@limosin.com.br",
-    instagramUrl: "https://www.instagram.com/limosin",
+    instagramUrl: "https://www.instagram.com/limosindev",
     whatsappNumber: "5511991280957",
     whatsappDefaultMessage: "Olá! Vim pelo site da Limosin e queria conversar sobre uma página para o meu negócio.",
 };

@@ -1,19 +1,21 @@
 import type { ContactBriefingForm } from "./contact.types";
 
 export const solutionLabels: Record<string, string> = {
-    "pagina-simples": "Pagina Simples",
+    "landing-page": "Landing Page",
+    "site-institucional": "Site Institucional",
+    "pagina-simples": "Página Simples",
     "site-simples": "Site Simples",
-    "pagina-de-divulgacao": "Pagina de Divulgacao",
-    "portfolio-profissional": "Portfolio Profissional",
+    "pagina-de-divulgacao": "Página de Divulgação",
     "ajustes-e-manutencao": "Ajustes em Site",
     "projeto-especial": "Ideia Maior",
+    "outra-ideia": "Outra ideia",
 };
 
 export const briefingGuidelines = [
-    "<strong>Objetivo:</strong> o que voce quer que a pessoa entenda ou faca ao acessar.",
-    "<strong>Conteudo:</strong> textos, imagens, referencias ou materiais que voce ja tem.",
-    "<strong>Publico:</strong> para quem essa pagina precisa fazer sentido.",
-    "<strong>Prazo:</strong> quando voce gostaria de colocar isso no ar.",
+    "<strong>Objetivo:</strong> o que você quer que a pessoa entenda ou faça ao acessar.",
+    "<strong>Conteúdo:</strong> textos, imagens, referências ou materiais que você já tem.",
+    "<strong>Público:</strong> para quem essa página precisa fazer sentido.",
+    "<strong>Prazo:</strong> quando você gostaria de colocar isso no ar.",
 ];
 
 export const initialBriefingForm: ContactBriefingForm = {
@@ -28,13 +30,12 @@ export const initialBriefingForm: ContactBriefingForm = {
 };
 
 export const briefingScopeOptions = [
-    "Pagina simples",
-    "Site com algumas paginas",
-    "Pagina de divulgacao",
-    "Portfolio profissional",
-    "Texto e organizacao",
+    "Página simples",
+    "Site com algumas páginas",
+    "Página de divulgação",
+    "Texto e organização",
     "Visual da marca",
-    "Melhorar pagina existente",
+    "Melhorar página existente",
     "Ideia maior para conversar",
 ];
 
