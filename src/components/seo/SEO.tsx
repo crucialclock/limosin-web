@@ -11,6 +11,10 @@ type SEOProps = {
 };
 
 const managedSelector = "data-limosin-seo";
+const ogImageWidth = "1733";
+const ogImageHeight = "907";
+const ogImageType = "image/webp";
+const ogImageAlt = "Limosin - criação de sites institucionais e landing pages";
 
 function absoluteUrl(pathOrUrl: string) {
     if (/^https?:\/\//i.test(pathOrUrl)) {
@@ -66,6 +70,10 @@ export function SEO({ canonicalPath = "/", description, image = siteConfig.defau
         appendMeta({ property: "og:title", content: title });
         appendMeta({ property: "og:description", content: description });
         appendMeta({ property: "og:image", content: ogImage });
+        appendMeta({ property: "og:image:width", content: ogImageWidth });
+        appendMeta({ property: "og:image:height", content: ogImageHeight });
+        appendMeta({ property: "og:image:type", content: ogImageType });
+        appendMeta({ property: "og:image:alt", content: ogImageAlt });
         appendMeta({ property: "og:url", content: canonical });
         appendMeta({ property: "og:type", content: "website" });
         appendMeta({ property: "og:locale", content: "pt_BR" });
@@ -75,6 +83,7 @@ export function SEO({ canonicalPath = "/", description, image = siteConfig.defau
         appendMeta({ name: "twitter:title", content: title });
         appendMeta({ name: "twitter:description", content: description });
         appendMeta({ name: "twitter:image", content: ogImage });
+        appendMeta({ name: "twitter:image:alt", content: ogImageAlt });
 
         if (schema) {
             appendJsonLd(schema);

@@ -4,6 +4,10 @@ import { dirname, join } from "node:path";
 const siteUrl = "https://limosin.com.br";
 const siteName = "Limosin";
 const ogImage = `${siteUrl}/og-image.webp`;
+const ogImageWidth = "1733";
+const ogImageHeight = "907";
+const ogImageType = "image/webp";
+const ogImageAlt = "Limosin - criação de sites institucionais e landing pages";
 const defaultDescription = "Criação de sites institucionais e landing pages para empresas que querem fortalecer sua presença digital e facilitar o contato com novos clientes.";
 
 const routes = [
@@ -47,6 +51,10 @@ function seoHead(route) {
         `<meta data-limosin-seo="true" property="og:title" content="${escapeHtml(route.title)}" />`,
         `<meta data-limosin-seo="true" property="og:description" content="${escapeHtml(route.description)}" />`,
         `<meta data-limosin-seo="true" property="og:image" content="${ogImage}" />`,
+        `<meta data-limosin-seo="true" property="og:image:width" content="${ogImageWidth}" />`,
+        `<meta data-limosin-seo="true" property="og:image:height" content="${ogImageHeight}" />`,
+        `<meta data-limosin-seo="true" property="og:image:type" content="${ogImageType}" />`,
+        `<meta data-limosin-seo="true" property="og:image:alt" content="${escapeHtml(ogImageAlt)}" />`,
         `<meta data-limosin-seo="true" property="og:url" content="${canonical}" />`,
         '<meta data-limosin-seo="true" property="og:type" content="website" />',
         '<meta data-limosin-seo="true" property="og:locale" content="pt_BR" />',
@@ -55,6 +63,7 @@ function seoHead(route) {
         `<meta data-limosin-seo="true" name="twitter:title" content="${escapeHtml(route.title)}" />`,
         `<meta data-limosin-seo="true" name="twitter:description" content="${escapeHtml(route.description)}" />`,
         `<meta data-limosin-seo="true" name="twitter:image" content="${ogImage}" />`,
+        `<meta data-limosin-seo="true" name="twitter:image:alt" content="${escapeHtml(ogImageAlt)}" />`,
         `<link data-limosin-seo="true" rel="canonical" href="${canonical}" />`,
     ];
 
