@@ -13,7 +13,7 @@ import PageBackground from "../brand/PageBackground";
 
     export default function PageIntro({ eyebrow, title, description, primaryHref = "/contato", primaryLabel = "Falar com a Limosin", secondaryHref = "/", secondaryLabel = "Voltar para a home" }: PageIntroProps) {
         return (
-            <section className="theme-page brand-page-bg relative overflow-hidden">
+            <main className="theme-page brand-page-bg relative overflow-hidden">
                 <PageBackground />
 
                 <div className="page-shell relative grid grid-cols-1 items-start gap-10 pt-10 pb-20 sm:pt-16 sm:pb-24 lg:grid-cols-12 lg:gap-8 lg:pt-16 lg:pb-28">
@@ -34,6 +34,6 @@ import PageBackground from "../brand/PageBackground";
                         </div>
                     </div>
                 </div>
-            </section>
+            </main>
         );
     }

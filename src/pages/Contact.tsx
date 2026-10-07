@@ -2,10 +2,12 @@ import { ArrowRight, BadgeCheck, CircleCheckBig } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { FaWhatsapp } from "react-icons/fa";
 import PageBackground from "../components/brand/PageBackground";
+import { SEO } from "../components/seo/SEO";
 
 import { briefingGuidelines, solutionLabels } from "../features/contact/contact.constants";
 import { buildWhatsappUrl } from "../features/contact/contact.service";
 
+const contactDescription = "Fale com a Limosin pelo WhatsApp para conversar sobre criação de sites, landing pages e presença digital para o seu negócio.";
 const whatsappDisplayNumber = "(11) 99128-0957";
 
 export default function Contact() {
@@ -17,6 +19,7 @@ export default function Contact() {
 
     return (
         <main className="theme-page brand-page-bg relative flex min-h-[calc(100vh-72px)] w-full flex-col justify-start overflow-hidden">
+            <SEO title="Contato para Criação de Sites | Limosin" description={contactDescription} canonicalPath="/contato" />
             <PageBackground />
 
             <section className="page-shell relative z-10 py-10 pb-20 sm:py-16 sm:pb-24 lg:py-16 lg:pb-28">
@@ -24,7 +27,7 @@ export default function Contact() {
                     <div className="flex flex-col justify-start">
                         <h1 className="theme-text-primary page-title-display max-w-4xl lg:text-[clamp(3.8rem,5vw,4.55rem)]">Fale conosco</h1>
 
-                        <p className="theme-text-secondary mt-5 max-w-2xl text-base leading-relaxed font-medium sm:mt-7 sm:text-lg">Conte para a Limosin o que voce quer construir. Pode ser uma pagina nova, um site simples ou uma ideia que ainda esta tomando forma.</p>
+                        <p className="theme-text-secondary mt-5 max-w-2xl text-base leading-relaxed font-medium sm:mt-7 sm:text-lg">Conte para a Limosin o que você quer construir. Pode ser uma página nova, um site simples ou uma ideia que ainda está tomando forma.</p>
 
                         <div className="theme-surface theme-border relative mt-8 max-w-2xl overflow-hidden rounded-xl border p-5 shadow-xs sm:p-7 lg:mt-10">
                             <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rotate-45 border border-(--color-accent)/35" />
@@ -61,7 +64,7 @@ export default function Contact() {
 
                     <div className="theme-surface theme-border rounded-xl border p-5 shadow-(--shadow-surface) sm:p-8 lg:sticky lg:top-24">
                         <h2 className="theme-text-primary type-section-title">Vamos conversar?</h2>
-                        <p className="theme-text-secondary mt-2 text-sm leading-relaxed">O WhatsApp costuma ser o jeito mais rapido de alinhar a ideia e entender o melhor proximo passo.</p>
+                        <p className="theme-text-secondary mt-2 text-sm leading-relaxed">O WhatsApp costuma ser o jeito mais rápido de alinhar a ideia e entender o melhor próximo passo.</p>
 
                         <div className="mt-6 rounded-xl border border-(--color-accent)/35 bg-(--color-accent-soft) p-4">
                             <p className="theme-text-muted type-chip">WhatsApp</p>

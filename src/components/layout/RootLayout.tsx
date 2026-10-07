@@ -6,9 +6,9 @@ export default function RootLayout() {
     return (
         <div className="theme-page flex min-h-screen flex-col font-sans">
             <Navbar />
-            <main className="flex-1">
+            <div className="flex-1">
                 <Outlet />
-            </main>
+            </div>
             <Footer />
         </div>
     );

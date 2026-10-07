@@ -381,21 +381,98 @@
 
 .brand-page-bg {
     background:
-        linear-gradient(115deg, transparent 0 48%, rgba(255, 214, 44, 0.055) 48% 56%, transparent 56% 100%),
+        radial-gradient(circle at 18% 8%, rgba(255, 214, 44, 0.1), transparent 20rem),
+        radial-gradient(circle at 82% 28%, rgba(21, 21, 21, 0.045), transparent 24rem),
         linear-gradient(180deg, var(--color-canvas), color-mix(in srgb, var(--color-canvas) 92%, #deded6));
 }
 
 .brand-bg-grid {
     background-image:
-        linear-gradient(to right, rgba(21, 21, 21, 0.045) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(21, 21, 21, 0.04) 1px, transparent 1px);
+        linear-gradient(to right, rgba(21, 21, 21, 0.032) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(21, 21, 21, 0.026) 1px, transparent 1px);
     background-position:
         center top,
         center top;
     background-size:
-        5.5rem 5.5rem,
-        5.5rem 5.5rem;
-    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.14) 48%, transparent 88%);
+        6rem 6rem,
+        6rem 6rem;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.12) 48%, transparent 86%);
+}
+
+.brand-bg-plane {
+    position: absolute;
+    border: 1px solid rgba(21, 21, 21, 0.09);
+    background: rgba(255, 255, 255, 0.22);
+    transform: rotate(-10deg);
+}
+
+.brand-bg-plane-primary {
+    top: 7rem;
+    left: max(-18rem, calc(50% - 48rem));
+    height: 14rem;
+    width: min(72vw, 48rem);
+}
+
+.brand-bg-plane-secondary {
+    right: max(-22rem, calc(50% - 58rem));
+    bottom: 5rem;
+    height: 18rem;
+    width: min(78vw, 54rem);
+    border-color: rgba(255, 214, 44, 0.24);
+    background: rgba(255, 214, 44, 0.065);
+    transform: rotate(-10deg);
+}
+
+.brand-bg-mark {
+    position: absolute;
+    width: clamp(8rem, 18vw, 16rem);
+    aspect-ratio: 1;
+    border: 2px solid rgba(21, 21, 21, 0.08);
+}
+
+.brand-bg-mark-top {
+    top: 4.5rem;
+    right: max(-4rem, calc(50% - 43rem));
+    border-radius: 999px;
+    border-color: rgba(255, 214, 44, 0.2);
+}
+
+.brand-bg-mark-bottom {
+    left: max(-5rem, calc(50% - 42rem));
+    bottom: 5.5rem;
+    transform: rotate(45deg);
+    border-color: rgba(21, 21, 21, 0.075);
+}
+
+@media (max-width: 767px) {
+    .brand-bg-grid {
+        background-size:
+            4.5rem 4.5rem,
+            4.5rem 4.5rem;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.18), transparent 72%);
+    }
+
+    .brand-bg-plane-primary {
+        top: 8rem;
+        left: -18rem;
+        width: 32rem;
+    }
+
+    .brand-bg-plane-secondary {
+        right: -22rem;
+        bottom: 2rem;
+        width: 36rem;
+    }
+
+    .brand-bg-mark-top {
+        top: 5rem;
+        right: -5rem;
+    }
+
+    .brand-bg-mark-bottom {
+        left: -5rem;
+        bottom: 7rem;
+    }
 }
 
 .brand-shape {

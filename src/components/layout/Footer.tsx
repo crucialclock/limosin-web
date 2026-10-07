@@ -1,4 +1,4 @@
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+﻿import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { siteConfig } from "../../config/site";
 import BrandShape from "../brand/BrandShape";
@@ -38,8 +38,9 @@ export default function Footer() {
 
             <div className="page-shell relative z-10 flex flex-col gap-4 py-8">
                 <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-                    <div className="flex flex-wrap items-end gap-x-2 gap-y-1">
+                    <div className="flex flex-col items-start gap-1.5">
                         <img src="/logo-texto-monocromatica-branca.svg" alt={siteConfig.brandName} className="h-7 w-auto" />
+                        <p className="text-xs font-semibold leading-none text-(--color-brand-cream)/70">extraia o seu menor</p>
                         <p className="text-xs font-medium leading-none text-(--color-brand-cream)/60">© {currentYear}</p>
                     </div>
 

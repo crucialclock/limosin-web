@@ -1,7 +1,10 @@
 import { ArrowRight, BadgeCheck, CheckCircle2, CircleCheckBig, Clock, Globe, Layers3, MessageSquare, PenTool, Rocket, Search, ShieldCheck, XCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import PageBackground from "../components/brand/PageBackground";
+import { SEO } from "../components/seo/SEO";
 import { buildWhatsappUrl } from "../features/contact/contact.service";
+
+const servicesDescription = "Conheça os serviços da Limosin para criação de sites institucionais, landing pages e páginas para empresas que precisam fortalecer sua presença digital.";
 
 type ServicePlan = {
     slug: string;
@@ -304,6 +307,7 @@ function ServicesCTA() {
 export default function Services() {
     return (
         <main className="theme-page brand-page-bg relative flex min-h-[calc(100vh-72px)] w-full flex-col justify-start overflow-hidden">
+            <SEO title="Serviços de Criação de Sites | Limosin" description={servicesDescription} canonicalPath="/servicos" />
             <PageBackground />
             <ServicesHero />
             <MainServices />
