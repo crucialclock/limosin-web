@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { trackEvent } from "../../services/analytics";
 import Logo from "./Logo";
 
 const navigationLinks = [
@@ -12,6 +13,16 @@ export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const closeMenu = () => setIsMobileMenuOpen(false);
+
+    const trackNavigation = (to: string) => {
+        if (to === "/contato") {
+            trackEvent("click_contact");
+        }
+
+        if (to === "/servicos") {
+            trackEvent("view_services");
+        }
+    };
 
     const linkClasses = ({ isActive }: { isActive: boolean }) =>
         `cursor-pointer relative py-2 text-[0.92rem] font-bold tracking-[0.01em] transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:origin-center after:transition-transform after:duration-300 ${
@@ -30,7 +41,7 @@ export default function Navbar() {
 
                     <nav className="hidden items-center gap-8 md:flex">
                         {navigationLinks.map((link) => (
-                            <NavLink key={link.to} to={link.to} className={linkClasses}>
+                            <NavLink key={link.to} to={link.to} onClick={() => trackNavigation(link.to)} className={linkClasses}>
                                 {link.label}
                             </NavLink>
                         ))}
@@ -63,7 +74,15 @@ export default function Navbar() {
 
                 <nav className="flex flex-col">
                     {navigationLinks.map((link) => (
-                        <NavLink key={link.to} to={link.to} onClick={closeMenu} className={mobileLinkClasses}>
+                        <NavLink
+                            key={link.to}
+                            to={link.to}
+                            onClick={() => {
+                                trackNavigation(link.to);
+                                closeMenu();
+                            }}
+                            className={mobileLinkClasses}
+                        >
                             {link.label}
                         </NavLink>
                     ))}

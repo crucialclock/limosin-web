@@ -6,6 +6,7 @@ import { SEO } from "../components/seo/SEO";
 
 import { briefingGuidelines, solutionLabels } from "../features/contact/contact.constants";
 import { buildWhatsappUrl } from "../features/contact/contact.service";
+import { trackEvent } from "../services/analytics";
 
 const contactDescription = "Fale com a Limosin pelo WhatsApp para conversar sobre criação de sites, landing pages e presença digital para o seu negócio.";
 const whatsappDisplayNumber = "(11) 99128-0957";
@@ -74,7 +75,7 @@ export default function Contact() {
                             </p>
                         </div>
 
-                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="theme-cta-primary type-button group mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-8 py-4 transition-all duration-500 ease-in-out hover:scale-[1.02]">
+                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("click_whatsapp")} className="theme-cta-primary type-button group mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-8 py-4 transition-all duration-500 ease-in-out hover:scale-[1.02]">
                             <FaWhatsapp className="h-5 w-5" />
                             Chamar no WhatsApp
                             <ArrowRight className="h-4 w-4 transition-transform duration-500 ease-in-out group-hover:translate-x-1.5" strokeWidth={1.75} />

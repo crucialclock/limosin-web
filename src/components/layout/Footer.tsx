@@ -1,6 +1,7 @@
 ﻿import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { siteConfig } from "../../config/site";
+import { trackEvent } from "../../services/analytics";
 import BrandShape from "../brand/BrandShape";
 
 const currentYear = new Date().getFullYear();
@@ -59,6 +60,7 @@ export default function Footer() {
                                         href={item.href}
                                         target={item.external ? "_blank" : undefined}
                                         rel={item.external ? "noreferrer" : undefined}
+                                        onClick={item.label === "WhatsApp" ? () => trackEvent("click_whatsapp") : undefined}
                                         aria-label={item.label}
                                         className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-(--color-brand-cream)/20 text-(--color-brand-cream)/80 transition-colors duration-200 hover:border-(--color-brand-yellow) hover:text-(--color-brand-yellow)"
                                     >

@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import PageBackground from "../components/brand/PageBackground";
 import { SEO } from "../components/seo/SEO";
 import { buildWhatsappUrl } from "../features/contact/contact.service";
+import { trackEvent } from "../services/analytics";
 
 const servicesDescription = "Conheça os serviços da Limosin para criação de sites institucionais, landing pages e páginas para empresas que precisam fortalecer sua presença digital.";
 
@@ -155,7 +156,7 @@ function ServiceCard({ plan }: { plan: ServicePlan }) {
                     </ul>
                 </div>
 
-                <a href={whatsappHref(plan.name)} target="_blank" rel="noopener noreferrer" className={`type-button mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 transition-all duration-300 hover:scale-[1.01] sm:mt-7 ${plan.featured ? "theme-cta-primary" : "theme-cta-secondary"}`}>
+                <a href={whatsappHref(plan.name)} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("click_whatsapp")} className={`type-button mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 transition-all duration-300 hover:scale-[1.01] sm:mt-7 ${plan.featured ? "theme-cta-primary" : "theme-cta-secondary"}`}>
                     {plan.cta}
                     <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
                 </a>
@@ -269,7 +270,7 @@ function OutOfScope() {
                         <p className="theme-text-secondary mt-5 text-sm leading-relaxed">Precisou de algo assim? Converse com a gente e avaliamos o projeto separadamente.</p>
                     </div>
 
-                    <a href={whatsappHref("Outra necessidade")} target="_blank" rel="noopener noreferrer" className="theme-border theme-text-secondary type-button inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl border px-6 py-3.5 transition-colors hover:bg-(--color-brand-black) hover:text-(--color-brand-cream) sm:w-auto">
+                    <a href={whatsappHref("Outra necessidade")} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("click_whatsapp")} className="theme-border theme-text-secondary type-button inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl border px-6 py-3.5 transition-colors hover:bg-(--color-brand-black) hover:text-(--color-brand-cream) sm:w-auto">
                         Conversar sobre outra necessidade
                         <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
                     </a>
@@ -294,7 +295,7 @@ function ServicesCTA() {
                         </h2>
                         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-(--color-brand-cream)/75 sm:text-base">Vamos construir uma presença digital que apresente bem o que você faz e facilite o próximo contato.</p>
                     </div>
-                    <a href={whatsappHref("Meu projeto")} target="_blank" rel="noopener noreferrer" className="theme-cta-primary type-button inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl px-7 py-4 sm:w-auto">
+                    <a href={whatsappHref("Meu projeto")} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("click_whatsapp")} className="theme-cta-primary type-button inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl px-7 py-4 sm:w-auto">
                         Conversar sobre meu projeto
                         <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
                     </a>

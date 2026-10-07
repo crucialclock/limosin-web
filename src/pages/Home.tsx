@@ -5,6 +5,7 @@ import PageBackground from "../components/brand/PageBackground";
 import { fadeUp, softScale, staggerContainer } from "../components/home/motionPresets";
 import { SEO } from "../components/seo/SEO";
 import { siteConfig } from "../config/site";
+import { trackEvent } from "../services/analytics";
 
 const homeDescription = siteConfig.defaultDescription;
 const organizationSchema = {
@@ -45,7 +46,7 @@ export default function Home() {
                         </div>
 
                         <motion.div className="mt-7 flex w-full flex-col gap-3.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-5" variants={fadeUp}>
-                            <Link to="/contato" className="theme-cta-primary type-button group relative inline-flex w-full items-center justify-center overflow-hidden rounded-xl px-8 py-4 transition-all duration-500 ease-in-out hover:scale-[1.02] sm:w-auto sm:px-10">
+                            <Link to="/contato" onClick={() => trackEvent("click_contact")} className="theme-cta-primary type-button group relative inline-flex w-full items-center justify-center overflow-hidden rounded-xl px-8 py-4 transition-all duration-500 ease-in-out hover:scale-[1.02] sm:w-auto sm:px-10">
                                 <span className="relative z-10 flex items-center gap-2">
                                     Entre em contato
                                     <ArrowRight className="h-4 w-4 transition-transform duration-500 ease-in-out group-hover:translate-x-1.5" strokeWidth={1.8} />
@@ -64,7 +65,7 @@ export default function Home() {
                                         <img src="/home-hero-primary.webp" alt="Elemento gráfico abstrato" width="672" height="855" className="h-full w-full object-cover transition-transform duration-700 ease-in-out hover:scale-105" />
                                     </div>
 
-                                    <Link to="/servicos" className="theme-border theme-text-secondary type-button inline-flex min-h-13 w-full cursor-pointer items-center justify-center rounded-xl border bg-(--color-canvas)/55 px-8 py-3.5 transition-colors hover:bg-(--color-brand-black) hover:text-(--color-brand-cream)">
+                                    <Link to="/servicos" onClick={() => trackEvent("view_services")} className="theme-border theme-text-secondary type-button inline-flex min-h-13 w-full cursor-pointer items-center justify-center rounded-xl border bg-(--color-canvas)/55 px-8 py-3.5 transition-colors hover:bg-(--color-brand-black) hover:text-(--color-brand-cream)">
                                         Ver serviços
                                     </Link>
                                 </div>
