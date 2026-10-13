@@ -4,6 +4,9 @@ import { ExternalLink, FileText, FolderGit2, Globe, Layers, Palette, Rocket } fr
 import type { LucideIcon } from "lucide-react";
 import BrandShape from "../components/brand/BrandShape";
 import PageBackground from "../components/brand/PageBackground";
+import { SEO } from "../components/seo/SEO";
+
+const projectsDescription = "Veja formatos de sites, landing pages e páginas profissionais que a Limosin pode criar para empresas e profissionais da região.";
 
 export type Project = {
     slug: string;
@@ -131,6 +134,7 @@ export default function Projects() {
 
     return (
         <main className="theme-page brand-page-bg relative flex min-h-[calc(100vh-72px)] w-full flex-col justify-start overflow-hidden">
+            <SEO title="Projetos de Sites e Landing Pages | Limosin" description={projectsDescription} canonicalPath="/projetos" />
             <PageBackground />
 
             <section className="page-shell relative z-10 pt-10 sm:pt-16 lg:pt-16">

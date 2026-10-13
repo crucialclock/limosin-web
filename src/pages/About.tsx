@@ -1,6 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageBackground from "../components/brand/PageBackground";
+import { SEO } from "../components/seo/SEO";
+
+const aboutDescription = "Conheça a Limosin, estúdio de criação de sites e páginas simples para empresas que querem uma presença digital clara e profissional.";
 
 function LemonIllustration() {
     return (
@@ -81,6 +84,7 @@ function PitcherIllustration() {
 export default function About() {
     return (
         <main className="theme-page brand-page-bg relative flex min-h-[calc(100vh-72px)] w-full flex-col justify-start overflow-hidden">
+            <SEO title="Sobre a Limosin | Criação de Sites" description={aboutDescription} canonicalPath="/sobre" />
             <PageBackground />
 
             {/* HERO */}
