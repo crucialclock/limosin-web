@@ -41,7 +41,7 @@ export default function Footer() {
                 <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                     <div className="flex flex-col items-start gap-1.5">
                         <img src="/logo-texto-monocromatica-branca.svg" alt={siteConfig.brandName} className="h-7 w-auto" />
-                        <p className="text-xs font-semibold leading-none text-(--color-brand-cream)/70">extraia o seu menor</p>
+                        <p className="text-xs font-semibold leading-none text-(--color-brand-cream)/70">extraia o seu melhor</p>
                         <p className="text-xs font-medium leading-none text-(--color-brand-cream)/60">© {currentYear}</p>
                     </div>
 
